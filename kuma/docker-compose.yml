@@ -1,0 +1,19 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    volumes:
+      - /home/ghostadmin/kuma/data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+  ntfy:
+    image: binwiederhier/ntfy
+    container_name: ntfy
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - /home/ghostadmin/kuma/ntfy-data:/var/cache/ntfy
+    command: serve

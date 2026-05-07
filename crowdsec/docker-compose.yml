@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    container_name: crowdsec
+    restart: unless-stopped
+    environment:
+      COLLECTIONS: "crowdsecurity/linux crowdsecurity/sshd crowdsecurity/nginx crowdsecurity/http-cve"
+      GID: "1000"
+    volumes:
+      - crowdsec-config:/etc/crowdsec
+      - crowdsec-data:/var/lib/crowdsec/data
+      # Log di sistema (SSH, auth)
+      - /var/log:/var/log:ro
+    ports:
+      - "127.0.0.1:8081:8080"  # LAPI solo in localhost!
+
+volumes:
+  - crowdsec-config:/etc/crowdsec
+  - crowdsec-data:/var/lib/crowdsec/data
+  - /var/log:/var/log:ro
+  - /path/to/nginx/logs:/var/log/nginx:ro  
