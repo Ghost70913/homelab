@@ -16,8 +16,12 @@ TELEGRAM_CHAT_ID=""           # Chat ID dove inviare il messaggio
 # VEEAM_JOB_RESULT_CODE – codice: 0=Success, 1=Warning, 2=Failed
 
 JOB_NAME="${VEEAM_JOB_NAME:-Backup Job}"
-JOB_RESULT="${VEEAM_JOB_RESULT:-Unknown}"
 JOB_RESULT_CODE="${VEEAM_JOB_RESULT_CODE:-0}"
+case "${VEEAM_JOB_RESULT_CODE}" in
+    0) JOB_RESULT="Success" ;;
+    1) JOB_RESULT="Warning" ;;
+    *) JOB_RESULT="Failed" ;;
+esac
 DATETIME=$(date "+%d/%m/%Y %H:%M:%S")
 HOSTNAME=$(hostname)
 
@@ -39,13 +43,14 @@ case "${JOB_RESULT_CODE}" in
 esac
 
 # Componi il messaggio
-MESSAGE="${EMOJI} *Veeam Backup – ${STATO}*
 
+MESSAGE="${EMOJI} *Veeam Backup – ${JOB_NAME}*
 🖥 *Server:* \`${HOSTNAME}\`
 📋 *Job:* \`${JOB_NAME}\`
 📅 *Data/Ora:* ${DATETIME}
 💾 *Dimensione backup:* ${BACKUP_SIZE}
-📊 *Esito:* ${JOB_RESULT}"
+📊 *Esito:* ${JOB_RESULT}
+
 
 # Invia il messaggio via Telegram API
 curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
