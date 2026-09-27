@@ -1,5 +1,10 @@
-mkdir -p ~/navidrome
-cat > ~/navidrome/docker-compose.yml << 'EOF'
+#!/bin/bash
+# Crea la cartella e il docker-compose per Navidrome (server musicale)
+set -e
+
+mkdir -p ~/navidrome/data ~/navidrome/music
+
+cat > ~/navidrome/docker-compose.yml << 'COMPOSE'
 services:
   navidrome:
     image: deluan/navidrome:latest
@@ -14,7 +19,9 @@ services:
       ND_SESSIONTIMEOUT: 24h
       ND_BASEURL: ""
     volumes:
-      - ~/navidrome/data:/data
-      - ~/navidrome/music:/music:ro
+      - ./data:/data
+      - ./music:/music:ro
+COMPOSE
 
-EOF
+echo "✅ Creato ~/navidrome/docker-compose.yml"
+echo "Avvia con: cd ~/navidrome && docker compose up -d"

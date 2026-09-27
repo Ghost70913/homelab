@@ -6,14 +6,15 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - /home/ghostadmin/kuma/data:/app/data
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # monitoraggio dei container
+
   ntfy:
     image: binwiederhier/ntfy
     container_name: ntfy
     restart: unless-stopped
+    command: serve
     ports:
       - "8080:80"
     volumes:
-      - /home/ghostadmin/kuma/ntfy-data:/var/cache/ntfy
-    command: serve
+      - ./ntfy-data:/var/cache/ntfy

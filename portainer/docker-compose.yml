@@ -1,14 +1,14 @@
 services:
   portainer:
-    container_name: portainer
     image: portainer/portainer-ce:latest
-    restart: always
+    container_name: portainer
+    restart: unless-stopped
+    ports:
+      - "9443:9443"   # interfaccia web (HTTPS)
+      # - "8000:8000" # tunnel per Portainer Edge Agent: abilitalo solo se serve
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
-    ports:
-      - 9443:9443
-      - 8000:8000
 
 volumes:
   portainer_data:

@@ -1,0 +1,11 @@
+# File con password e dati reali: non vanno mai su GitHub
+.env
+*.env
+!.env.example
+
+# Dati persistenti dei container
+**/data/
+**/ntfy-data/
+
+# Configurazioni locali con token
+*.conf
